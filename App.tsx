@@ -44,11 +44,21 @@ const App: React.FC = () => {
 
   return (
     <div className="h-screen w-screen flex flex-col p-2 md:p-4 safe-area-inset-top overflow-hidden relative text-white">
-      
+
       {/* Top Section - Display Area (Adaptive Height) */}
-      <div className="flex-1 min-h-0 flex flex-col relative">
-        {/* Header - Settings and SOS */}
+      <div className="flex-1 min-h-0 flex flex-col relative small-display">
+        {/* Header - Settings, Cancel (X), and SOS */}
         <div className="absolute top-0 right-0 z-50 p-2 flex gap-2 md:gap-3">
+          {/* Cancel/Close X button - clears selection */}
+          {selectedItem && (
+            <button
+              onClick={() => setSelectedItem(null)}
+              className="w-10 h-10 md:w-12 md:h-12 glass border-white/10 rounded-full flex items-center justify-center text-lg md:text-xl shadow-lg transition-all opacity-60 hover:opacity-100 hover:bg-white/10"
+              aria-label="Clear selection"
+            >
+              ✕
+            </button>
+          )}
           <button
             onClick={() => setMode('SETTINGS')}
             className="w-10 h-10 md:w-12 md:h-12 glass border-white/10 rounded-full flex items-center justify-center text-lg md:text-xl shadow-lg active:rotate-90 transition-all opacity-40 hover:opacity-100"
@@ -64,15 +74,15 @@ const App: React.FC = () => {
         </div>
 
         {/* Display Content - Centered */}
-        <div className="flex-1 flex flex-col items-center justify-center animate-in fade-in duration-500 min-h-0">
+        <div className="flex-1 flex flex-col items-center justify-center animate-in fade-in duration-500 min-h-0 px-4">
           {selectedItem ? (
-            <div 
-              className="glass p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] flex flex-col items-center text-center max-w-lg w-full border-white/20 cursor-pointer active:scale-95 transition-transform"
+            <div
+              className="glass p-4 sm:p-6 md:p-10 rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[3rem] flex flex-col items-center text-center max-w-lg w-full border-white/20 cursor-pointer active:scale-95 transition-transform"
               onClick={() => setSelectedItem(null)}
             >
-              <span className="text-[6rem] sm:text-[8rem] md:text-[10rem] lg:text-[12rem] mb-2 md:mb-4 leading-none drop-shadow-2xl">{selectedItem.icon}</span>
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-1 tracking-tighter">{selectedItem.tamilLabel}</h2>
-              <p className="text-lg md:text-2xl opacity-40 font-black uppercase tracking-[0.2em]">{selectedItem.label}</p>
+              <span className="display-icon text-[5rem] sm:text-[6rem] md:text-[8rem] lg:text-[10rem] xl:text-[12rem] mb-2 md:mb-4 leading-none drop-shadow-2xl">{selectedItem.icon}</span>
+              <h2 className="display-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-1 tracking-tighter">{selectedItem.tamilLabel}</h2>
+              <p className="text-sm sm:text-lg md:text-xl lg:text-2xl opacity-40 font-black uppercase tracking-[0.1em] sm:tracking-[0.2em]">{selectedItem.label}</p>
             </div>
           ) : (
             <div className="text-center opacity-10 flex flex-col items-center p-4">
@@ -84,28 +94,28 @@ const App: React.FC = () => {
       </div>
 
       {/* Bottom Section - Grid (Roughly 1/3 but flexible) */}
-      <div className="flex-none pt-2 pb-safe">
-        <div className="grid grid-cols-6 grid-rows-2 gap-2 md:gap-3 h-full max-w-6xl mx-auto">
+      <div className="flex-none pt-2 safe-area-bottom">
+        <div className="portrait-grid grid grid-cols-6 grid-rows-2 gap-2 md:gap-3 h-full max-w-6xl mx-auto">
           {ALL_NEEDS.map((item) => (
-            <NeedCard 
-              key={item.id} 
-              item={item} 
-              onClick={onSelectAction} 
+            <NeedCard
+              key={item.id}
+              item={item}
+              onClick={onSelectAction}
               active={selectedItem?.id === item.id}
             />
           ))}
-          
+
           {/* Emergency SOS Icon (Position 11) */}
           <button
             onClick={handleEmergencyClick}
             className="flex flex-col items-center justify-center rounded-xl md:rounded-2xl border border-red-500/30 bg-red-500/10 backdrop-blur-md transition-all active:scale-90 h-full w-full p-1 aspect-square"
           >
-            <div className="flex-1 flex items-center justify-center">
-              <span className="text-3xl md:text-4xl lg:text-5xl drop-shadow-md">🚨</span>
+            <div className="flex-1 flex items-center justify-center min-h-0">
+              <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl drop-shadow-md">🚨</span>
             </div>
-            <div className="flex flex-col items-center pb-0.5 md:pb-1">
-              <span className="text-[10px] sm:text-xs md:text-sm lg:text-base font-black tracking-tight text-center">அவசரம்</span>
-              <span className="text-[6px] sm:text-[8px] md:text-[10px] opacity-40 font-bold uppercase">SOS</span>
+            <div className="flex flex-col items-center pb-0.5 md:pb-1 min-h-0">
+              <span className="text-[8px] sm:text-[10px] md:text-xs lg:text-sm font-black tracking-tight text-center">அவசரம்</span>
+              <span className="text-[5px] sm:text-[6px] md:text-[8px] opacity-40 font-bold uppercase">SOS</span>
             </div>
           </button>
 
@@ -114,12 +124,12 @@ const App: React.FC = () => {
             onClick={() => setMode('DRAW')}
             className="flex flex-col items-center justify-center rounded-xl md:rounded-2xl border border-white/10 bg-slate-900/40 backdrop-blur-md transition-all active:scale-90 h-full w-full p-1 aspect-square"
           >
-            <div className="flex-1 flex items-center justify-center">
-              <span className="text-3xl md:text-4xl lg:text-5xl drop-shadow-md">✏️</span>
+            <div className="flex-1 flex items-center justify-center min-h-0">
+              <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl drop-shadow-md">✏️</span>
             </div>
-            <div className="flex flex-col items-center pb-0.5 md:pb-1">
-              <span className="text-[10px] sm:text-xs md:text-sm lg:text-base font-black tracking-tight text-center">எழுது</span>
-              <span className="text-[6px] sm:text-[8px] md:text-[10px] opacity-40 font-bold uppercase">Write</span>
+            <div className="flex flex-col items-center pb-0.5 md:pb-1 min-h-0">
+              <span className="text-[8px] sm:text-[10px] md:text-xs lg:text-sm font-black tracking-tight text-center">எழுது</span>
+              <span className="text-[5px] sm:text-[6px] md:text-[8px] opacity-40 font-bold uppercase">Write</span>
             </div>
           </button>
         </div>
@@ -162,7 +172,7 @@ const App: React.FC = () => {
       )}
 
       {mode === 'DRAW' && <DrawingPad onClose={() => setMode('GRID')} />}
-      
+
       {!navigator.onLine && mode === 'GRID' && (
         <div className="fixed bottom-1 left-4 text-white/10 text-[8px] uppercase tracking-tighter pointer-events-none">
           Offline
