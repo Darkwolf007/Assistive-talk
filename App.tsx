@@ -5,7 +5,7 @@ import { ALL_NEEDS, EMERGENCY_CONTACTS } from './constants';
 import NeedCard from './components/NeedCard';
 import DrawingPad from './components/DrawingPad';
 import Settings from './components/Settings';
-import { speak } from './utils/speech';
+import { speak, initSpeech } from './utils/speech';
 
 const App: React.FC = () => {
   const [mode, setMode] = useState<AppMode>('GRID');
@@ -15,9 +15,7 @@ const App: React.FC = () => {
   });
 
   useEffect(() => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.getVoices();
-    }
+    initSpeech();
   }, []);
 
   const handleSaveEmergency = (num: string) => {
